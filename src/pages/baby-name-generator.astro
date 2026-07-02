@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NameGenerator from '../components/NameGenerator.astro';
+---
+
+<Layout 
+  title="Baby Name Generator - Unique & Meaningful Baby Names"
+  description="Instantly generate thousands of baby names. Filter by boy names, girl names, or gender-neutral options. Save your favorites and copy names easily."
+  keywords="baby name generator, baby names, boy baby names, girl baby names, unisex baby names, unique baby names, baby name ideas"
+>
+  <div class="space-y-8 max-w-4xl mx-auto">
+    <!-- Header/Intro -->
+    <div class="text-center space-y-3">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#111111] dark:text-white leading-none">
+        Baby Name Generator
+      </h1>
+      <p class="text-base text-[#666666] dark:text-[#888888] max-w-2xl mx-auto">
+        Discover the perfect name for your little one. Whether you are looking for timeless classics, modern ideas, or unique gender-neutral options, find it here.
+      </p>
+    </div>
+
+    <!-- Generator Component -->
+    <NameGenerator category="baby" categoryName="Baby" />
+
+    <!-- SEO Content Section -->
+    <section class="border-t border-[#e5e7eb] dark:border-[#222222] pt-10 mt-12 space-y-6 text-[#666666] dark:text-[#888888] text-sm leading-relaxed theme-transition">
+      <h2 class="text-lg font-bold text-[#111111] dark:text-white">Tips for Choosing Your Baby's Name</h2>
+      <p>
+        Naming a child is one of the most exciting and meaningful decisions of parenthood. Here are some strategies to help narrow down your choices:
+      </p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li><strong>Say it Out Loud:</strong> Test how the first name sounds alongside your last name. Listen to the rhythm, syllable count, and flow.</li>
+        <li><strong>Check the Initials:</strong> Make sure the initials don't spell out anything embarrassing or unwanted.</li>
+        <li><strong>Consider Nicknames:</strong> Think about what shortened versions children or friends might use as they grow up, and make sure you like them.</li>
+        <li><strong>Look Up Meanings:</strong> Many parents find inspiration in names with strong definitions, such as strength, peace, joy, or nature.</li>
+      </ul>
+    </section>
+  </div>
+</Layout>

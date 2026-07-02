@@ -1,0 +1,203 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+}
+
+const { title, description, keywords = "name generator, free names, fantasy names, baby names, viking names" } = Astro.props;
+
+const categories = [
+  { name: 'Fantasy', href: '/fantasy-name-generator' },
+  { name: 'Baby', href: '/baby-name-generator' },
+  { name: 'Business', href: '/business-name-generator' },
+  { name: 'Username', href: '/username-generator' },
+  { name: 'Pet', href: '/pet-name-generator' },
+  { name: 'Viking', href: '/viking-name-generator' }
+];
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{title} | Free Name Generator</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Name Generator Team" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={`${title} | Free Name Generator`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Free Name Generator" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Theme Initialization script (runs immediately to prevent flash) -->
+    <script is:inline>
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return 'dark'; // Dark mode is default
+      };
+
+      const theme = getTheme();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body class="bg-white dark:bg-black text-[#111111] dark:text-white min-h-screen flex flex-col theme-transition">
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-[#e5e7eb] dark:border-[#222222] theme-transition">
+      <div class="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-2 text-xl font-bold tracking-tight text-[#111111] dark:text-white">
+          <svg class="w-6 h-6 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+          <span>NameGen</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-6">
+          {categories.map(cat => (
+            <a 
+              href={cat.href} 
+              class="text-sm font-medium text-[#666666] dark:text-[#888888] hover:text-brand-blue dark:hover:text-brand-blue transition-colors duration-150"
+            >
+              {cat.name}
+            </a>
+          ))}
+        </nav>
+
+        <!-- Right side actions -->
+        <div class="flex items-center space-x-4">
+          <!-- Dark Mode Toggle Button -->
+          <button 
+            type="button"
+            class="theme-toggle-btn p-2 rounded-md border border-[#e5e7eb] dark:border-[#222222] hover:bg-[#f9f9f9] dark:hover:bg-[#111111] transition-colors text-[#666666] dark:text-[#888888] hover:text-[#111111] dark:hover:text-white"
+            title="Toggle theme (Press D)"
+            aria-label="Toggle Theme"
+          >
+            <!-- Sun icon (shown in dark mode) -->
+            <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m14.071-7.071l-.707.707M6.343 17.657l-.707.707m2.828-9.9a5 5 0 117.072 0l-.707.707M6.343 6.343l-.707-.707m12.728 12.728l-.707-.707"></path>
+            </svg>
+            <!-- Moon icon (shown in light mode) -->
+            <svg class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
+
+          <!-- Mobile Menu Button -->
+          <button 
+            id="mobile-menu-btn" 
+            type="button" 
+            class="md:hidden p-2 rounded-md border border-[#e5e7eb] dark:border-[#222222] hover:bg-[#f9f9f9] dark:hover:bg-[#111111] transition-colors text-[#666666] dark:text-[#888888]"
+            aria-label="Toggle Mobile Menu"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-[#e5e7eb] dark:border-[#222222] bg-white dark:bg-black theme-transition">
+        <nav class="flex flex-col px-6 py-4 space-y-4">
+          {categories.map(cat => (
+            <a 
+              href={cat.href} 
+              class="text-base font-medium text-[#666666] dark:text-[#888888] hover:text-brand-blue transition-colors py-1"
+            >
+              {cat.name} Generator
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-[1200px] w-full mx-auto px-6 py-10 md:py-16">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#e5e7eb] dark:border-[#222222] bg-[#f9f9f9] dark:bg-[#111111] py-12 theme-transition">
+      <div class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+          <span class="font-bold text-sm text-[#111111] dark:text-white">NameGen</span>
+          <span class="text-xs text-[#666666] dark:text-[#888888]">&copy; {new Date().getFullYear()} NameGen. All rights reserved.</span>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-6 text-sm text-[#666666] dark:text-[#888888]">
+          <a href="/about" class="hover:text-brand-blue transition-colors">About</a>
+          <a href="/contact" class="hover:text-brand-blue transition-colors">Contact</a>
+          <a href="/privacy-policy" class="hover:text-brand-blue transition-colors">Privacy Policy</a>
+          <a href="/terms" class="hover:text-brand-blue transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Client-Side Navigation and Theme Scripts -->
+    <script>
+      const toggleTheme = () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        if (isDark) {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+        window.dispatchEvent(new Event('theme-change'));
+      };
+
+      // Add click listener to theme toggles
+      document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', toggleTheme);
+      });
+
+      // Add keydown shortcut "D"
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        const target = e.target as HTMLElement;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+          return;
+        }
+        if (e.key.toLowerCase() === 'd') {
+          toggleTheme();
+        }
+      });
+
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    </script>
+  </body>
+</html>

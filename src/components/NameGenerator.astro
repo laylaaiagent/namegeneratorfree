@@ -1,0 +1,535 @@
+---
+import { nameData } from '../data/names.js';
+
+interface Props {
+  category: 'fantasy' | 'baby' | 'business' | 'username' | 'pet' | 'viking';
+  categoryName: string;
+}
+
+const { category, categoryName } = Astro.props;
+const namesForCategory = nameData[category];
+---
+
+<div 
+  id="name-generator-container" 
+  data-category={category} 
+  data-names={JSON.stringify(namesForCategory)}
+  class="space-y-12"
+>
+  <!-- Query Parameter Shared Name Hero Card -->
+  <div id="shared-name-banner" class="hidden bg-brand-blue/10 dark:bg-brand-blue/5 border border-brand-blue/30 dark:border-brand-blue/20 rounded-lg p-6 text-center max-w-xl mx-auto theme-transition">
+    <span class="text-xs uppercase tracking-wider text-brand-blue font-semibold">Shared Name</span>
+    <h2 id="shared-name-value" class="text-3xl font-extrabold text-[#111111] dark:text-white my-3"></h2>
+    <div class="flex justify-center space-x-3 mt-4">
+      <button 
+        type="button"
+        id="shared-copy-btn"
+        class="flex items-center space-x-1.5 px-4 py-2 bg-white dark:bg-[#111111] border border-[#e5e7eb] dark:border-[#222222] text-sm font-medium rounded-md hover:border-brand-blue dark:hover:border-brand-blue text-[#111111] dark:text-white transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+        </svg>
+        <span>Copy Name</span>
+      </button>
+      <button 
+        type="button"
+        id="shared-heart-btn"
+        class="flex items-center space-x-1.5 px-4 py-2 bg-white dark:bg-[#111111] border border-[#e5e7eb] dark:border-[#222222] text-sm font-medium rounded-md hover:border-brand-blue dark:hover:border-brand-blue text-[#111111] dark:text-white transition-colors"
+      >
+        <svg class="w-4 h-4 shared-heart-icon text-[#888888]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        <span>Favorite</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Generator Controls Form -->
+  <div class="bg-[#f9f9f9] dark:bg-[#111111] border border-[#e5e7eb] dark:border-[#222222] rounded-lg p-6 md:p-8 max-w-3xl mx-auto theme-transition">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+      <!-- Gender Filter -->
+      <div class="flex flex-col">
+        <label for="gender-select" class="text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#888888] mb-2">Gender Filter</label>
+        <select 
+          id="gender-select"
+          class="w-full bg-white dark:bg-black border border-[#e5e7eb] dark:border-[#333333] text-[#111111] dark:text-white px-4 py-3 rounded-md focus:outline-none focus:border-brand-blue text-sm transition-colors cursor-pointer"
+        >
+          <option value="any">Any Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="neutral">Neutral</option>
+        </select>
+      </div>
+
+      <!-- Count Selector -->
+      <div class="flex flex-col">
+        <label for="count-select" class="text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#888888] mb-2">Names to Generate</label>
+        <select 
+          id="count-select"
+          class="w-full bg-white dark:bg-black border border-[#e5e7eb] dark:border-[#333333] text-[#111111] dark:text-white px-4 py-3 rounded-md focus:outline-none focus:border-brand-blue text-sm transition-colors cursor-pointer"
+        >
+          <option value="6">6 Names</option>
+          <option value="9">9 Names</option>
+          <option value="12">12 Names</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Generate Button -->
+    <button 
+      type="button" 
+      id="generate-btn"
+      class="w-full bg-brand-blue hover:bg-brand-blue-hover text-white font-semibold py-3 px-6 rounded-md transition-colors duration-150 shadow-md cursor-pointer flex items-center justify-center space-x-2"
+    >
+      <svg class="w-4 h-4 animate-spin hidden" id="loading-spinner" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span>Generate Names</span>
+    </button>
+  </div>
+
+  <!-- Names Grid Section -->
+  <div class="space-y-6">
+    <h3 class="text-xl font-semibold text-[#111111] dark:text-white text-center">Generated Names</h3>
+    <div id="names-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Generated Cards Inserted Dynamically -->
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast" class="fixed bottom-6 right-6 hidden bg-[#111111] dark:bg-white text-white dark:text-[#111111] px-4 py-3 rounded-md shadow-lg border border-[#222222] dark:border-[#e5e7eb] text-sm items-center space-x-2 transition-all duration-300 transform translate-y-2 opacity-0 z-50">
+    <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toast-message">Copied to clipboard!</span>
+  </div>
+
+  <!-- Favourites Section -->
+  <div class="border-t border-[#e5e7eb] dark:border-[#222222] pt-12 theme-transition">
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-semibold text-[#111111] dark:text-white flex items-center space-x-2">
+          <svg class="w-5 h-5 text-red-500 fill-red-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+          </svg>
+          <span>My Favourite {categoryName} Names</span>
+        </h3>
+        <button 
+          type="button" 
+          id="clear-favs-btn" 
+          class="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-semibold cursor-pointer"
+        >
+          Clear All
+        </button>
+      </div>
+
+      <div id="favourites-list" class="flex flex-wrap gap-3 p-4 bg-[#f9f9f9] dark:bg-[#111111] border border-[#e5e7eb] dark:border-[#222222] rounded-lg min-h-[80px] items-center justify-center text-center theme-transition">
+        <!-- Favourites rendered dynamically -->
+        <p class="text-sm text-[#666666] dark:text-[#888888]" id="no-favs-message">No favourite names saved yet. Click the heart on any card to save it here!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('name-generator-container');
+    if (!container) return;
+
+    const category = container.getAttribute('data-category') || '';
+    const allNames = JSON.parse(container.getAttribute('data-names') || '{}');
+
+    const genderSelect = document.getElementById('gender-select') as HTMLSelectElement;
+    const countSelect = document.getElementById('count-select') as HTMLSelectElement;
+    const generateBtn = document.getElementById('generate-btn') as HTMLButtonElement;
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const namesGrid = document.getElementById('names-grid');
+    const favouritesList = document.getElementById('favourites-list');
+    const noFavsMessage = document.getElementById('no-favs-message');
+    const clearFavsBtn = document.getElementById('clear-favs-btn');
+    
+    // Shared name banner elements
+    const sharedNameBanner = document.getElementById('shared-name-banner');
+    const sharedNameValue = document.getElementById('shared-name-value');
+    const sharedCopyBtn = document.getElementById('shared-copy-btn');
+    const sharedHeartBtn = document.getElementById('shared-heart-btn');
+
+    // Toast element
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+
+    // Get favourites from localStorage
+    const getFavourites = (): { name: string; gender: string }[] => {
+      const stored = localStorage.getItem(`fav_${category}`);
+      return stored ? JSON.parse(stored) : [];
+    };
+
+    // Save favourites to localStorage
+    const saveFavourites = (favs: { name: string; gender: string }[]) => {
+      localStorage.setItem(`fav_${category}`, JSON.stringify(favs));
+    };
+
+    // Show Toast Notification
+    const showToast = (msg: string) => {
+      if (!toast || !toastMessage) return;
+      toastMessage.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      
+      // Animate entry
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+      }, 10);
+
+      // Dismiss after 2s
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+          toast.classList.remove('flex');
+          toast.classList.add('hidden');
+        }, 300);
+      }, 2000);
+    };
+
+    // Check query params for shared name on load
+    const checkSharedName = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sharedName = urlParams.get('name');
+      if (sharedName && sharedNameBanner && sharedNameValue && sharedCopyBtn && sharedHeartBtn) {
+        sharedNameValue.textContent = sharedName;
+        sharedNameBanner.classList.remove('hidden');
+        
+        // Find gender of shared name if it exists in data
+        let detectedGender = 'Neutral';
+        for (const [genderKey, list] of Object.entries(allNames)) {
+          if (Array.isArray(list) && list.some(n => n.toLowerCase() === sharedName.toLowerCase())) {
+            detectedGender = genderKey.charAt(0).toUpperCase() + genderKey.slice(1);
+            break;
+          }
+        }
+
+        // Setup copy button
+        sharedCopyBtn.onclick = () => {
+          navigator.clipboard.writeText(sharedName);
+          showToast(`Copied "${sharedName}" to clipboard!`);
+        };
+
+        // Setup heart button
+        const updateSharedHeartState = () => {
+          const favs = getFavourites();
+          const isFav = favs.some(f => f.name.toLowerCase() === sharedName.toLowerCase());
+          const icon = sharedHeartBtn.querySelector('.shared-heart-icon');
+          if (icon) {
+            if (isFav) {
+              icon.classList.remove('text-[#888888]', 'dark:text-[#888888]');
+              icon.classList.add('text-red-500', 'fill-red-500');
+            } else {
+              icon.classList.remove('text-red-500', 'fill-red-500');
+              icon.classList.add('text-[#888888]');
+            }
+          }
+        };
+
+        sharedHeartBtn.onclick = () => {
+          const favs = getFavourites();
+          const nameIndex = favs.findIndex(f => f.name.toLowerCase() === sharedName.toLowerCase());
+          if (nameIndex > -1) {
+            favs.splice(nameIndex, 1);
+            showToast(`Removed "${sharedName}" from favourites.`);
+          } else {
+            favs.push({ name: sharedName, gender: detectedGender });
+            showToast(`Added "${sharedName}" to favourites!`);
+          }
+          saveFavourites(favs);
+          updateSharedHeartState();
+          renderFavourites();
+          updateGridHeartStates();
+        };
+
+        updateSharedHeartState();
+      }
+    };
+
+    // Update heart icons on the main grid when items are favorited/unfavorited elsewhere
+    const updateGridHeartStates = () => {
+      const favs = getFavourites();
+      const gridItems = namesGrid?.querySelectorAll('[data-name]');
+      gridItems?.forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const heartBtn = item.querySelector('.grid-heart-btn');
+        const heartIcon = heartBtn?.querySelector('svg');
+        const isFav = favs.some(f => f.name.toLowerCase() === name.toLowerCase());
+
+        if (heartIcon) {
+          if (isFav) {
+            heartIcon.classList.remove('text-[#888888]');
+            heartIcon.classList.add('text-red-500', 'fill-red-500');
+          } else {
+            heartIcon.classList.remove('text-red-500', 'fill-red-500');
+            heartIcon.classList.add('text-[#888888]');
+          }
+        }
+      });
+    };
+
+    // Render Favourites List
+    const renderFavourites = () => {
+      if (!favouritesList) return;
+      const favs = getFavourites();
+
+      // Clear list first
+      favouritesList.innerHTML = '';
+
+      if (favs.length === 0) {
+        if (noFavsMessage) {
+          favouritesList.appendChild(noFavsMessage);
+        }
+        return;
+      }
+
+      favs.forEach(fav => {
+        const tag = document.createElement('div');
+        tag.className = "flex items-center space-x-2 bg-white dark:bg-black border border-[#e5e7eb] dark:border-[#222222] rounded-full px-4 py-1.5 text-sm font-medium theme-transition";
+        
+        let genderColor = 'bg-[#888888]';
+        if (fav.gender.toLowerCase() === 'male') genderColor = 'bg-blue-500';
+        if (fav.gender.toLowerCase() === 'female') genderColor = 'bg-pink-500';
+        if (fav.gender.toLowerCase() === 'neutral') genderColor = 'bg-purple-500';
+
+        tag.innerHTML = `
+          <span class="w-2 h-2 rounded-full ${genderColor}"></span>
+          <span class="text-[#111111] dark:text-white">${fav.name}</span>
+          <button 
+            type="button" 
+            class="text-[#888888] hover:text-red-500 transition-colors focus:outline-none ml-1 cursor-pointer"
+            title="Remove from Favourites"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        `;
+
+        // Bind delete functionality
+        const deleteBtn = tag.querySelector('button');
+        if (deleteBtn) {
+          deleteBtn.onclick = () => {
+            const updated = getFavourites().filter(f => f.name.toLowerCase() !== fav.name.toLowerCase());
+            saveFavourites(updated);
+            renderFavourites();
+            updateGridHeartStates();
+            // Update shared heart state too if applicable
+            if (sharedNameValue && sharedNameValue.textContent?.toLowerCase() === fav.name.toLowerCase()) {
+              const sharedHeartIcon = sharedHeartBtn?.querySelector('.shared-heart-icon');
+              if (sharedHeartIcon) {
+                sharedHeartIcon.classList.remove('text-red-500', 'fill-red-500');
+                sharedHeartIcon.classList.add('text-[#888888]');
+              }
+            }
+            showToast(`Removed "${fav.name}" from favourites.`);
+          };
+        }
+
+        favouritesList.appendChild(tag);
+      });
+    };
+
+    // Shuffle helper
+    const shuffleArray = (arr: any[]) => {
+      const cloned = [...arr];
+      for (let i = cloned.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
+      }
+      return cloned;
+    };
+
+    // Generate Names Click
+    const handleGenerate = () => {
+      if (generateBtn && loadingSpinner) {
+        generateBtn.disabled = true;
+        loadingSpinner.classList.remove('hidden');
+      }
+
+      // Simulate a small premium loading effect for 300ms
+      setTimeout(() => {
+        const gender = genderSelect.value;
+        const count = parseInt(countSelect.value, 10);
+        
+        let pool: { name: string; gender: string }[] = [];
+
+        if (gender === 'any') {
+          pool = [
+            ...allNames.male.map((n: string) => ({ name: n, gender: 'Male' })),
+            ...allNames.female.map((n: string) => ({ name: n, gender: 'Female' })),
+            ...allNames.neutral.map((n: string) => ({ name: n, gender: 'Neutral' }))
+          ];
+        } else {
+          const genderList = allNames[gender] || [];
+          pool = genderList.map((n: string) => ({ 
+            name: n, 
+            gender: gender.charAt(0).toUpperCase() + gender.slice(1) 
+          }));
+        }
+
+        const shuffled = shuffleArray(pool);
+        const selected = shuffled.slice(0, count);
+
+        renderGrid(selected);
+
+        if (generateBtn && loadingSpinner) {
+          generateBtn.disabled = false;
+          loadingSpinner.classList.add('hidden');
+        }
+      }, 300);
+    };
+
+    // Render Name Cards in Grid
+    const renderGrid = (namesList: { name: string; gender: string }[]) => {
+      if (!namesGrid) return;
+      namesGrid.innerHTML = '';
+
+      const favs = getFavourites();
+
+      namesList.forEach(item => {
+        const isFav = favs.some(f => f.name.toLowerCase() === item.name.toLowerCase());
+        const card = document.createElement('div');
+        card.setAttribute('data-name', item.name);
+        card.className = "bg-[#f9f9f9] dark:bg-[#111111] border border-[#e5e7eb] dark:border-[#222222] rounded-lg p-6 flex flex-col justify-between hover:border-brand-blue dark:hover:border-brand-blue hover:shadow-sm transition-all duration-200 theme-transition relative";
+
+        let genderTagColor = 'text-gray-500 bg-gray-100 dark:bg-gray-800';
+        if (item.gender.toLowerCase() === 'male') genderTagColor = 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20';
+        if (item.gender.toLowerCase() === 'female') genderTagColor = 'text-pink-600 bg-pink-50 dark:text-pink-400 dark:bg-pink-900/20';
+        if (item.gender.toLowerCase() === 'neutral') genderTagColor = 'text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-900/20';
+
+        card.innerHTML = `
+          <div class="flex flex-col items-center justify-center flex-grow pt-4 pb-6">
+            <h4 class="text-2xl font-bold tracking-tight text-[#111111] dark:text-white mb-2 text-center select-all">${item.name}</h4>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${genderTagColor}">${item.gender}</span>
+          </div>
+
+          <!-- Bottom Actions Panel -->
+          <div class="flex items-center justify-between border-t border-[#e5e7eb] dark:border-[#222222] pt-4 theme-transition">
+            <!-- Copy -->
+            <button 
+              type="button" 
+              class="grid-copy-btn p-2 rounded-md hover:bg-white dark:hover:bg-black text-[#888888] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer"
+              title="Copy to clipboard"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+              </svg>
+            </button>
+
+            <!-- Share -->
+            <button 
+              type="button" 
+              class="grid-share-btn p-2 rounded-md hover:bg-white dark:hover:bg-black text-[#888888] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer"
+              title="Copy shareable link"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 10.742l5.428-2.714m0 5.942l-5.428-2.714m6.014-3.55A3 3 0 1118 7.5a3 3 0 01-3.328 2.972M6 14.5a3 3 0 11-3-3 3 3 0 013 3zm12 3a3 3 0 11-3-3 3 3 0 013 3z"></path>
+              </svg>
+            </button>
+
+            <!-- Heart Favorite -->
+            <button 
+              type="button" 
+              class="grid-heart-btn p-2 rounded-md hover:bg-white dark:hover:bg-black text-[#888888] hover:text-red-500 transition-colors cursor-pointer"
+              title="Add to Favourites"
+            >
+              <svg class="w-4 h-4 transition-colors ${isFav ? 'text-red-500 fill-red-500' : 'text-[#888888]'}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </button>
+          </div>
+        `;
+
+        // Bind copy click
+        const copyBtn = card.querySelector('.grid-copy-btn');
+        copyBtn?.addEventListener('click', () => {
+          navigator.clipboard.writeText(item.name);
+          showToast(`Copied "${item.name}" to clipboard!`);
+        });
+
+        // Bind share click
+        const shareBtn = card.querySelector('.grid-share-btn');
+        shareBtn?.addEventListener('click', () => {
+          const shareUrl = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(item.name)}`;
+          navigator.clipboard.writeText(shareUrl);
+          showToast(`Shareable link for "${item.name}" copied to clipboard!`);
+        });
+
+        // Bind heart click
+        const heartBtn = card.querySelector('.grid-heart-btn');
+        heartBtn?.addEventListener('click', () => {
+          const currentFavs = getFavourites();
+          const nameIndex = currentFavs.findIndex(f => f.name.toLowerCase() === item.name.toLowerCase());
+          
+          if (nameIndex > -1) {
+            currentFavs.splice(nameIndex, 1);
+            showToast(`Removed "${item.name}" from favourites.`);
+          } else {
+            currentFavs.push({ name: item.name, gender: item.gender });
+            showToast(`Added "${item.name}" to favourites!`);
+          }
+          saveFavourites(currentFavs);
+          renderFavourites();
+          updateGridHeartStates();
+
+          // Sync shared name heart state if it happens to be the same name
+          if (sharedNameValue && sharedNameValue.textContent?.toLowerCase() === item.name.toLowerCase()) {
+            const sharedHeartIcon = sharedHeartBtn?.querySelector('.shared-heart-icon');
+            const isFavNow = currentFavs.some(f => f.name.toLowerCase() === item.name.toLowerCase());
+            if (sharedHeartIcon) {
+              if (isFavNow) {
+                sharedHeartIcon.classList.remove('text-[#888888]');
+                sharedHeartIcon.classList.add('text-red-500', 'fill-red-500');
+              } else {
+                sharedHeartIcon.classList.remove('text-red-500', 'fill-red-500');
+                sharedHeartIcon.classList.add('text-[#888888]');
+              }
+            }
+          }
+        });
+
+        namesGrid.appendChild(card);
+      });
+    };
+
+    // Clear all favourites click
+    if (clearFavsBtn) {
+      clearFavsBtn.onclick = () => {
+        if (getFavourites().length === 0) return;
+        if (confirm("Are you sure you want to clear all your saved favourites for this category?")) {
+          saveFavourites([]);
+          renderFavourites();
+          updateGridHeartStates();
+          // Reset shared name heart icon if visible
+          const sharedHeartIcon = sharedHeartBtn?.querySelector('.shared-heart-icon');
+          if (sharedHeartIcon) {
+            sharedHeartIcon.classList.remove('text-red-500', 'fill-red-500');
+            sharedHeartIcon.classList.add('text-[#888888]');
+          }
+          showToast("Cleared all favourites.");
+        }
+      };
+    }
+
+    // Initialize Page
+    checkSharedName();
+    renderFavourites();
+    handleGenerate(); // Auto generate a set on load
+
+    // Listen to generate button
+    generateBtn.addEventListener('click', handleGenerate);
+
+    // Sync theme change events if we need to repaint SVG shapes, etc.
+    window.addEventListener('theme-change', () => {
+      // Any specific repaint hooks can go here if needed.
+    });
+  });
+</script>

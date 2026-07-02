@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Contact Us"
+  description="Get in touch with the NameGen team."
+>
+  <div class="max-w-2xl mx-auto space-y-6">
+    <h1 class="text-3xl font-extrabold text-[#111111] dark:text-white">Contact Us</h1>
+    <p class="text-sm text-[#666666] dark:text-[#888888]">
+      Have feedback, requests for new name categories, or suggestions? We'd love to hear from you.
+    </p>
+
+    <!-- Contact Form following minimal inputs DESIGN.md guidelines -->
+    <form class="space-y-4 max-w-lg pt-4" onsubmit="event.preventDefault(); alert('Message sent! (Note: This is a stub contact page form.)')">
+      <div class="flex flex-col">
+        <label for="contact-name" class="text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#888888] mb-1.5">Name</label>
+        <input 
+          id="contact-name"
+          type="text" 
+          required 
+          placeholder="Your Name"
+          class="bg-white dark:bg-black border border-[#e5e7eb] dark:border-[#333333] text-[#111111] dark:text-white px-4 py-2.5 rounded-md focus:outline-none focus:border-brand-blue text-sm transition-colors"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="contact-email" class="text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#888888] mb-1.5">Email Address</label>
+        <input 
+          id="contact-email"
+          type="email" 
+          required 
+          placeholder="your.email@example.com"
+          class="bg-white dark:bg-black border border-[#e5e7eb] dark:border-[#333333] text-[#111111] dark:text-white px-4 py-2.5 rounded-md focus:outline-none focus:border-brand-blue text-sm transition-colors"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="contact-message" class="text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#888888] mb-1.5">Message</label>
+        <textarea 
+          id="contact-message"
+          rows="5" 
+          required 
+          placeholder="Describe your suggestion or feedback..."
+          class="bg-white dark:bg-black border border-[#e5e7eb] dark:border-[#333333] text-[#111111] dark:text-white px-4 py-2.5 rounded-md focus:outline-none focus:border-brand-blue text-sm transition-colors resize-none"
+        ></textarea>
+      </div>
+
+      <button 
+        type="submit" 
+        class="bg-brand-blue hover:bg-brand-blue-hover text-white font-semibold py-2.5 px-6 rounded-md transition-colors text-sm cursor-pointer shadow-md"
+      >
+        Send Message
+      </button>
+    </form>
+  </div>
+</Layout>

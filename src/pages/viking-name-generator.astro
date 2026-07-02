@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NameGenerator from '../components/NameGenerator.astro';
+---
+
+<Layout 
+  title="Viking Name Generator - Old Norse & Warrior Names"
+  description="Generate historic Old Norse warrior and shieldmaiden names. Perfect for authors, roleplay characters, gaming tags, and mythology enthusiasts."
+  keywords="viking name generator, norse name generator, old norse names, viking warrior names, shieldmaiden names, scandinavian names"
+>
+  <div class="space-y-8 max-w-4xl mx-auto">
+    <!-- Header/Intro -->
+    <div class="text-center space-y-3">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#111111] dark:text-white leading-none">
+        Viking Name Generator
+      </h1>
+      <p class="text-base text-[#666666] dark:text-[#888888] max-w-2xl mx-auto">
+        Discover historic Norse names. From historical figures to legendary mythological characters, find powerful Viking names for your creations.
+      </p>
+    </div>
+
+    <!-- Generator Component -->
+    <NameGenerator category="viking" categoryName="Viking" />
+
+    <!-- SEO Content Section -->
+    <section class="border-t border-[#e5e7eb] dark:border-[#222222] pt-10 mt-12 space-y-6 text-[#666666] dark:text-[#888888] text-sm leading-relaxed theme-transition">
+      <h2 class="text-lg font-bold text-[#111111] dark:text-white">Viking Naming Traditions and Customs</h2>
+      <p>
+        In Old Norse society, names held deep spiritual and familial significance. Here are some interesting facts about how the Vikings named their children:
+      </p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li><strong>Deity Associations:</strong> Many Viking names incorporated the names of Norse gods to invoke protection and power. Prefixes or suffixes like "Thor" (e.g., <em>Thorstein</em>, <em>Torvi</em>) were extremely common.</li>
+        <li><strong>Patronymic Surnames:</strong> Vikings did not have permanent family surnames. Instead, they used patronymics (or sometimes matronymics). A son of Ragnar would have the surname <em>Ragnarsson</em>, and a daughter would be <em>Ragnarsdottir</em>.</li>
+        <li><strong>Honorifics & Nicknames:</strong> Vikings often received descriptive descriptors based on their accomplishments, appearance, or temperament, such as Ragnar "Lodbrok" (Hairy Breeches) or Ivar "the Boneless".</li>
+      </ul>
+    </section>
+  </div>
+</Layout>

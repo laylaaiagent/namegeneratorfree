@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NameGenerator from '../components/NameGenerator.astro';
+---
+
+<Layout 
+  title="Business Name Generator - Creative Startup & Brand Ideas"
+  description="Generate catchy, professional, and unique business name ideas instantly. Filter by masculine, feminine, or neutral brand tones. Save favorites and share links."
+  keywords="business name generator, brand name generator, startup name generator, company name generator, business names, brand ideas"
+>
+  <div class="space-y-8 max-w-4xl mx-auto">
+    <!-- Header/Intro -->
+    <div class="text-center space-y-3">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#111111] dark:text-white leading-none">
+        Business Name Generator
+      </h1>
+      <p class="text-base text-[#666666] dark:text-[#888888] max-w-2xl mx-auto">
+        Find a strong, memorable name for your company, product, or shop. Filter by name style to discover a brand name that stands out in the market.
+      </p>
+    </div>
+
+    <!-- Generator Component -->
+    <NameGenerator category="business" categoryName="Business" />
+
+    <!-- SEO Content Section -->
+    <section class="border-t border-[#e5e7eb] dark:border-[#222222] pt-10 mt-12 space-y-6 text-[#666666] dark:text-[#888888] text-sm leading-relaxed theme-transition">
+      <h2 class="text-lg font-bold text-[#111111] dark:text-white">How to Select a Great Business Name</h2>
+      <p>
+        A great brand name sets the foundation for your marketing and customer perception. Keep these principles in mind during your branding process:
+      </p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li><strong>Keep it Simple & Memorability:</strong> Names that are easy to spell, pronounce, and remember stick in the minds of potential customers.</li>
+        <li><strong>Ensure Scalability:</strong> Avoid choosing names that are too narrow (like <em>Dallas Shoe Repair</em> if you plan to expand shoes globally or offer bag cleaning later).</li>
+        <li><strong>Trademark & Domain Check:</strong> Once you find a name you love, check trademark databases and domain registrars (.com is preferred) to ensure availability.</li>
+      </ul>
+    </section>
+  </div>
+</Layout>

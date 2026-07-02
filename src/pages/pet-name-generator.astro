@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NameGenerator from '../components/NameGenerator.astro';
+---
+
+<Layout 
+  title="Pet Name Generator - Cute Dog, Cat & Animal Names"
+  description="Generate thousands of cute, cool, and funny pet name ideas for puppies, kittens, dogs, cats, and birds. Filter by male, female, or neutral names."
+  keywords="pet name generator, dog names, cat names, puppy names, kitten names, pet names, cute pet names, animal names"
+>
+  <div class="space-y-8 max-w-4xl mx-auto">
+    <!-- Header/Intro -->
+    <div class="text-center space-y-3">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#111111] dark:text-white leading-none">
+        Pet Name Generator
+      </h1>
+      <p class="text-base text-[#666666] dark:text-[#888888] max-w-2xl mx-auto">
+        Find the perfect name for your new companion. From popular classics to unique foods, colors, and personalities, discover animal name ideas here.
+      </p>
+    </div>
+
+    <!-- Generator Component -->
+    <NameGenerator category="pet" categoryName="Pet" />
+
+    <!-- SEO Content Section -->
+    <section class="border-t border-[#e5e7eb] dark:border-[#222222] pt-10 mt-12 space-y-6 text-[#666666] dark:text-[#888888] text-sm leading-relaxed theme-transition">
+      <h2 class="text-lg font-bold text-[#111111] dark:text-white">How to Name Your New Pet</h2>
+      <p>
+        Bringing home a new pet is a joy. When choosing a name for your dog, cat, or other animal friend, consider these helpful guidelines:
+      </p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li><strong>Short is Sweet:</strong> Pets respond best to short names with one or two syllables (like <em>Max</em> or <em>Luna</em>). It is easier for them to recognize.</li>
+        <li><strong>Test commands:</strong> Make sure the name doesn't sound too similar to common commands. For example, the name "Kit" sounds like "Sit", which could confuse a puppy.</li>
+        <li><strong>Match their Personality:</strong> Spend a few days watching how they behave. An energetic kitten might suit <em>Storm</em> or <em>Ziggy</em>, while a sleepy puppy might be <em>Biscuit</em> or <em>Oreo</em>.</li>
+      </ul>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NameGenerator from '../components/NameGenerator.astro';
+---
+
+<Layout 
+  title="Username Generator - Cool & Unique Handles"
+  description="Generate cool, unique, and creative usernames for Twitch, YouTube, Instagram, Discord, and gaming. Filter by gender vibes and easily copy handles."
+  keywords="username generator, gamer tag generator, cool usernames, twitch names, youtube handle generator, unique handles"
+>
+  <div class="space-y-8 max-w-4xl mx-auto">
+    <!-- Header/Intro -->
+    <div class="text-center space-y-3">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#111111] dark:text-white leading-none">
+        Username Generator
+      </h1>
+      <p class="text-base text-[#666666] dark:text-[#888888] max-w-2xl mx-auto">
+        Stand out online with a custom username. Generate unique social media handles, gamer tags, and online aliases that fit your personal brand or gaming style.
+      </p>
+    </div>
+
+    <!-- Generator Component -->
+    <NameGenerator category="username" categoryName="Username" />
+
+    <!-- SEO Content Section -->
+    <section class="border-t border-[#e5e7eb] dark:border-[#222222] pt-10 mt-12 space-y-6 text-[#666666] dark:text-[#888888] text-sm leading-relaxed theme-transition">
+      <h2 class="text-lg font-bold text-[#111111] dark:text-white">Creating the Perfect Username</h2>
+      <p>
+        Your username is your digital footprint and represents who you are in virtual spaces. Here is how to create a handle that stands out:
+      </p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li><strong>Consistency:</strong> Try to find a username that is available across all major platforms (Twitter/X, Instagram, YouTube, Twitch, etc.) to keep your branding aligned.</li>
+        <li><strong>Avoid Too Many Numbers:</strong> Usernames like <em>CoolGamer829471</em> can look like spam bots. Aim for clean text, using underscores or dots only if necessary.</li>
+        <li><strong>Character Limit:</strong> Some platforms limit usernames to 15 or 20 characters. Keep it relatively short so it fits within system bounds.</li>
+      </ul>
+    </section>
+  </div>
+</Layout>
