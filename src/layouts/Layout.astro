@@ -17,6 +17,7 @@ const categories = [
   { name: 'Pet', href: '/pet-name-generator' },
   { name: 'Viking', href: '/viking-name-generator' }
 ];
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -43,6 +44,8 @@ const categories = [
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:url" content={canonicalURL} />
     <meta name="author" content="Name Generator Team" />
     
     <!-- Open Graph -->
